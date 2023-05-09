@@ -24,7 +24,7 @@ function onDownload() {
 }
 
 function onSubmitForm(event) {
-  event.preventDefault();
+  event.preventDefault(); //відмінили перезагрузку
   localStorage.removeItem(LOCAL_STORAGE_KEY);
   formEl.reset();
   console.log(localStorageArray);
