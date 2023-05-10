@@ -18,13 +18,17 @@ function onDownload() {
   let parseStateOfLocalStorage = JSON.parse(stateOfLocalStorage); //забрали значення з сховища
 
   if (stateOfLocalStorage) {
-    inputEl.value = parseStateOfLocalStorage.email;
-    textareaEl.value = parseStateOfLocalStorage.message;
+    inputEl.value = parseStateOfLocalStorage.email || '';
+    textareaEl.value = parseStateOfLocalStorage.message || '';
   } ///перевірка
 }
 
 function onSubmitForm(event) {
   event.preventDefault(); //відмінили перезагрузку
+
+  if (!inputEl.value) {
+    return alert('Please write your email');
+  }
   localStorage.removeItem(LOCAL_STORAGE_KEY);
   formEl.reset();
   console.log(localStorageArray);
