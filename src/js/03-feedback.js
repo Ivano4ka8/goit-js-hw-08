@@ -4,13 +4,17 @@ const formEl = document.querySelector('.feedback-form');
 const inputEl = document.querySelector('input');
 const textareaEl = document.querySelector('textarea');
 const LOCAL_STORAGE_KEY = 'feedback-form-state';
-let localStorageArray = {};
+let userData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+
+formEl.addEventListener('input', throttle(onChangeForm, 500));
+formEl.addEventListener('submit', onSubmitForm);
 
 onDownload();
 
 function onChangeForm(event) {
-  localStorageArray[event.target.name] = event.target.value; //створили змінні для обєкту
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localStorageArray));
+  userData.email = inputEl.value;
+  userData.message = textareaEl.value;
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userData));
 }
 
 function onDownload() {
@@ -20,7 +24,8 @@ function onDownload() {
   if (stateOfLocalStorage) {
     inputEl.value = parseStateOfLocalStorage.email || '';
     textareaEl.value = parseStateOfLocalStorage.message || '';
-  } ///перевірка
+    return;
+  }
 }
 
 function onSubmitForm(event) {
@@ -29,10 +34,9 @@ function onSubmitForm(event) {
   if (!inputEl.value) {
     return alert('Please write your email');
   }
+
   localStorage.removeItem(LOCAL_STORAGE_KEY);
   formEl.reset();
-  console.log(localStorageArray);
-}
 
-formEl.addEventListener('input', throttle(onChangeForm, 500));
-formEl.addEventListener('submit', onSubmitForm);
+  console.log(userData);
+}
